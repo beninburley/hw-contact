@@ -38,6 +38,7 @@ export const ContactEditor: React.FC = () => {
       <button
         type="button"
         onClick={handleSubmit}
+        disabled={!isProfileValid() || state.status === "Submitting"}
         style={{
           marginTop: "1rem",
           padding: "0.6rem 1rem",

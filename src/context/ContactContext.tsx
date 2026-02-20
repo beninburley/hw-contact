@@ -12,7 +12,7 @@ type ContactContextValue = {
   state: State;
   dispatch: React.Dispatch<Action>;
   handleChange: (
-    field: ContactField
+    field: ContactField,
   ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleBlur: (field: ContactField) => () => void;
   handleSubmit: () => void;
@@ -50,6 +50,25 @@ export const ContactProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const handleSubmit = () => {
     dispatch({ type: "submitStart" });
+
+    //AI helped me create the timeout to display the state status
+    setTimeout(() => {
+      const { firstName, lastName, email, phone } = state.contact;
+      const isValidNow =
+        validateField("firstName", firstName) === "" &&
+        validateField("lastName", lastName) === "" &&
+        validateField("email", email) === "" &&
+        validateField("phone", phone) === "";
+
+      if (isValidNow) {
+        dispatch({ type: "submitSuccess" });
+      } else {
+        dispatch({
+          type: "submitError",
+          message: "Please fix validation errors.",
+        });
+      }
+    }, 1000); // 1 second
   };
 
   const isProfileValid = (): boolean => {
@@ -90,7 +109,7 @@ export const ContactProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useContactContext = (): ContactContextValue => {
   const context = useContext(ContactContext);
-
+  // AI Helped me with this function... I'm not sure why would we need some of the error messages
   if (!context) {
     throw new Error("useContactContext must be used inside <ContactProvider>");
   }
