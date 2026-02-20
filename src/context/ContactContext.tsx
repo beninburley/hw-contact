@@ -27,12 +27,19 @@ export const ContactProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [state, dispatch] = useReducer(contactReducer, initialState);
 
+  //Ai Helped me build the regex validations
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const PHONE_REGEX =
+    /^(?:\+1\s?)?(?:\(\d{3}\)|\d{3})[-.\s]?\d{3}[-.\s]?\d{4}$/;
+
   const validateField = (field: keyof FormState, value: string): string => {
-    if (field === "email" && !value.includes("@")) {
-      return "Email must contain '@'";
-    } else if (field === "firstName" && value.trim() === "") {
-      return "Name is required";
-    } else if (field === "phone" && value.length < 10) {
+    if (field === "email" && !EMAIL_REGEX.test(value.trim())) {
+      return "Please enter a valid email";
+    } else if (field === "firstName" && value.trim().length < 2) {
+      return "First Name must be at least 2 letters";
+    } else if (field === "lastName" && value.trim().length < 2) {
+      return "Last Name must be at least 2 letters";
+    } else if (field === "phone" && !PHONE_REGEX.test(value.trim())) {
       return "Please enter a valid phone number";
     }
 

@@ -15,7 +15,7 @@ export const ContactEditor: React.FC = () => {
 
   return (
     <div style={{ padding: "2rem", maxWidth: "600px", margin: "0 auto" }}>
-      <h2>Profile Editor</h2>
+      <h2>Contact Editor</h2>
 
       <div style={{ marginBottom: "1rem" }}>
         <span
