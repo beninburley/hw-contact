@@ -6,7 +6,7 @@ import {
   type ContactField,
   type FormState,
   type State,
-} from "../types/ContactContex";
+} from "../types/ContactTypes";
 
 type ContactContextValue = {
   state: State;

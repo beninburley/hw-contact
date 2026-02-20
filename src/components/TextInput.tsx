@@ -1,6 +1,6 @@
 import React from "react";
 import { useContactContext } from "../context/ContactContext";
-import type { ContactField } from "../types/ContactContex";
+import type { ContactField } from "../types/ContactTypes";
 
 interface TextInputProps {
   label: string;
