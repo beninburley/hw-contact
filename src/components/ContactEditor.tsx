@@ -4,7 +4,7 @@ import { ContactPreview } from "./ContactPreview";
 import { useContactContext } from "../context/ContactContext";
 
 export const ContactEditor: React.FC = () => {
-  const { state, handleSubmit } = useContactContext();
+  const { state, handleSubmit, isProfileValid } = useContactContext();
 
   const statusColor: Record<typeof state.status, string> = {
     Editing: "#2563eb",
@@ -44,7 +44,8 @@ export const ContactEditor: React.FC = () => {
           fontSize: "1rem",
           borderRadius: "4px",
           border: "1px solid #ccc",
-          cursor: "pointer",
+          cursor: !isProfileValid() ? "not-allowed" : "pointer",
+          opacity: !isProfileValid() ? 0.6 : 1,
         }}
       >
         Submit
