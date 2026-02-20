@@ -1,20 +1,11 @@
 import React from "react";
+import { useContactContext } from "../context/ContactContext";
 
-interface ProfilePreviewProps {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  email: string;
-  isValid: boolean;
-}
+export const ProfilePreview: React.FC = () => {
+  const { state, isProfileValid } = useContactContext();
+  const { firstName, lastName, phone, email } = state.contact;
+  const fullName = `${firstName} ${lastName}`.trim();
 
-export const ProfilePreview: React.FC<ProfilePreviewProps> = ({
-  firstName,
-  lastName,
-  phone,
-  email,
-  isValid,
-}) => {
   return (
     <div
       style={{
@@ -27,7 +18,7 @@ export const ProfilePreview: React.FC<ProfilePreviewProps> = ({
     >
       <h3>Profile Preview</h3>
       <div style={{ marginTop: "0.5rem" }}>
-        <strong>Name:</strong> {firstName + " " + lastName || "(not provided)"}
+        <strong>Name:</strong> {fullName || "(not provided)"}
       </div>
       <div style={{ marginTop: "0.5rem" }}>
         <strong>Email:</strong> {email || "(not provided)"}
@@ -37,8 +28,8 @@ export const ProfilePreview: React.FC<ProfilePreviewProps> = ({
       </div>
       <div style={{ marginTop: "0.5rem" }}>
         <strong>Status:</strong>{" "}
-        <span style={{ color: isValid ? "green" : "red" }}>
-          {isValid ? "✓ Valid" : "✗ Invalid"}
+        <span style={{ color: isProfileValid() ? "green" : "red" }}>
+          {isProfileValid() ? "✓ Valid" : "✗ Invalid"}
         </span>
       </div>
     </div>

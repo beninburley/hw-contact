@@ -1,20 +1,16 @@
 import React from "react";
+import { useContactContext } from "../context/ContactContext";
+import type { ContactField } from "../types/ContactContex";
 
 interface TextInputProps {
   label: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  error?: string;
+  field: ContactField;
 }
 
-export const TextInput: React.FC<TextInputProps> = ({
-  label,
-  value,
-  onChange,
-  onBlur,
-  error,
-}) => {
+export const TextInput: React.FC<TextInputProps> = ({ label, field }) => {
+  const { state, handleChange, handleBlur, getError } = useContactContext();
+  const error = getError(field);
+
   return (
     <div style={{ marginBottom: "1rem" }}>
       <label style={{ display: "block", marginBottom: "0.25rem" }}>
@@ -22,9 +18,9 @@ export const TextInput: React.FC<TextInputProps> = ({
       </label>
       <input
         type="text"
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
+        value={state.contact[field]}
+        onChange={handleChange(field)}
+        onBlur={handleBlur(field)}
         style={{
           padding: "0.5rem",
           fontSize: "1rem",
