@@ -46,6 +46,18 @@ export const ContactProvider: React.FC<{ children: React.ReactNode }> = ({
     return "";
   };
 
+  const getValidationErrors = (contact: FormState) => {
+    const errors: Partial<Record<ContactField, string>> = {};
+    (Object.keys(contact) as ContactField[]).forEach((field) => {
+      const error = validateField(field, contact[field]);
+      if (error) {
+        errors[field] = error;
+      }
+    });
+
+    return errors;
+  };
+
   const handleChange =
     (field: ContactField) => (e: React.ChangeEvent<HTMLInputElement>) => {
       dispatch({ type: "changeField", field, value: e.target.value });
@@ -59,23 +71,13 @@ export const ContactProvider: React.FC<{ children: React.ReactNode }> = ({
     dispatch({ type: "submitStart" });
 
     //AI helped me create the timeout to display the state status
+    const snapshot = state.contact;
     setTimeout(() => {
-      const { firstName, lastName, email, phone } = state.contact;
-      const isValidNow =
-        validateField("firstName", firstName) === "" &&
-        validateField("lastName", lastName) === "" &&
-        validateField("email", email) === "" &&
-        validateField("phone", phone) === "";
-
-      if (isValidNow) {
-        dispatch({ type: "submitSuccess" });
-      } else {
-        dispatch({
-          type: "submitError",
-          message: "Please fix validation errors.",
-        });
-      }
-    }, 1000); // 1 second
+      dispatch({
+        type: "submitComplete",
+        errors: getValidationErrors(snapshot),
+      });
+    }, 1000);
   };
 
   const isProfileValid = (): boolean => {

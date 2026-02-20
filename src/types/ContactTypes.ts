@@ -37,12 +37,13 @@ export type State =
 
 export type ContactField = keyof FormState;
 
+type ValidationErrors = Partial<Record<ContactField, string>>;
+
 export type Action =
   | { type: "changeField"; field: ContactField; value: string }
   | { type: "blurField"; field: ContactField }
   | { type: "submitStart" }
-  | { type: "submitSuccess" }
-  | { type: "submitError"; message: string };
+  | { type: "submitComplete"; errors: ValidationErrors };
 
 export type ContactState = "Submitting" | "Submitted" | "Editing" | "Error";
 
@@ -86,25 +87,27 @@ export function contactReducer(state: State, action: Action): State {
       };
 
     case "submitStart":
+      if (state.status !== "Editing" && state.status !== "Error") return state;
       return {
         status: "Submitting",
         contact: state.contact,
         touched: state.touched,
       };
 
-    case "submitSuccess":
-      return {
-        status: "Submitted",
-        contact: state.contact,
-        touched: state.touched,
-      };
-
-    case "submitError":
+    case "submitComplete":
+      if (state.status !== "Submitting") return state;
+      if (Object.keys(action.errors).length === 0) {
+        return {
+          status: "Submitted",
+          contact: state.contact,
+          touched: state.touched,
+        };
+      }
       return {
         status: "Error",
         contact: state.contact,
-        touched: state.touched,
-        message: action.message,
+        touched: { firstName: true, lastName: true, email: true, phone: true },
+        message: "Please fix validation errors.",
       };
   }
   return assertNever(action);
