@@ -1,6 +1,6 @@
 import React from "react";
 import { TextInput } from "./TextInput";
-import { ProfilePreview } from "./ContactPreview";
+import { ContactPreview } from "./ContactPreview";
 import { useContactContext } from "../context/ContactContext";
 
 export const ContactEditor: React.FC = () => {
@@ -50,7 +50,7 @@ export const ContactEditor: React.FC = () => {
         Submit
       </button>
 
-      <ProfilePreview />
+      <ContactPreview />
     </div>
   );
 };

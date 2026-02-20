@@ -1,7 +1,7 @@
 import React from "react";
 import { useContactContext } from "../context/ContactContext";
 
-export const ProfilePreview: React.FC = () => {
+export const ContactPreview: React.FC = () => {
   const { state, isProfileValid } = useContactContext();
   const { firstName, lastName, phone, email } = state.contact;
   const fullName = `${firstName} ${lastName}`.trim();
@@ -16,7 +16,7 @@ export const ProfilePreview: React.FC = () => {
         backgroundColor: "#f9f9f900",
       }}
     >
-      <h3>Profile Preview</h3>
+      <h3>Contact Preview</h3>
       <div style={{ marginTop: "0.5rem" }}>
         <strong>Name:</strong> {fullName || "(not provided)"}
       </div>
